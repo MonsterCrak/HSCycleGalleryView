@@ -118,32 +118,38 @@ extension HSCycleGalleryView {
         RunLoop.main.add(timer!, forMode: RunLoop.Mode.common)
         //        timer = Timer.scheduledTimer(timeInterval: TimeInterval(autoScrollInterval), target: self, selector: #selector(autoScroll), userInfo: nil, repeats: true)
     }
+
+     public func disableAutoScroll() {
+        autoScrollInterval = 0
+        removeTimer()
+    }
     
     @objc func autoScroll() {
         if self.superview == nil || self.window == nil {
             return
         }
         print("timer-autoScroll")
-        self.scrollToNextIndex()
+        //self.scrollToNextIndex()
     }
     
-    private func scrollToNextIndex() {
-        var currentIndex = currentIndexPath.row
-        if (currentIndex + 1) >= indexArr.count {
-            currentIndex = groupCount / 2 * self.dataNum
-            collectionView.scrollToItem(at: IndexPath(item: currentIndex, section: 0), at: .centeredHorizontally, animated: false)
-        }
-        let nextIndex = currentIndex + 1
-        collectionView.scrollToItem(at: IndexPath(item: nextIndex, section: 0), at: .centeredHorizontally, animated: true)
-        currentIndexPath = IndexPath(item: nextIndex, section: 0)
-        if dataNum > 0 {
-            let pointInView = self.convert(collectionView.center, to: collectionView)
-            let indexPathNow = collectionView.indexPathForItem(at: pointInView)
-            let index = ((indexPathNow?.row ?? 0) + 1) % dataNum
-            
-            delegate?.changePageControl(currentIndex: index)
-        }
-    }
+//        var currentIndex = currentIndexPath.row
+//        let lastIndex = indexArr.count - 1
+//        
+//        if (currentIndex + 1) <= lastIndex {
+//            // Si no estamos en el último índice, nos desplazamos al siguiente
+//            let nextIndex = currentIndex + 1
+//            collectionView.scrollToItem(at: IndexPath(item: nextIndex, section: 0), at: .centeredHorizontally, animated: true)
+//            currentIndexPath = IndexPath(item: nextIndex, section: 0)
+//        }
+//        
+//        if dataNum > 0 {
+//            let pointInView = self.convert(collectionView.center, to: collectionView)
+//            let indexPathNow = collectionView.indexPathForItem(at: pointInView)
+//            let index = ((indexPathNow?.row ?? 0) + 1) % dataNum
+//            
+//            delegate?.changePageControl(currentIndex: index)
+//        }
+//    }
 }
 
 extension HSCycleGalleryView: UICollectionViewDelegate, UICollectionViewDataSource {
